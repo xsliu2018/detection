@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.BridgeMapper">
+    <sql id="columns">
+        id,
+        bridge_name,
+        span,
+        structure,
+        gmt_create,
+        struct_num,
+        picture_num,
+        report_path,
+        pic_path,
+        user_id bigint,
+        status,
+        type,
+    </sql>
+    <update id="updateBridge">
+        update bridge_tb set
+        <if test="bridgeName!=null">
+            bridge_name = #{bridgeName},
+        </if>
+        <if test="span!=null">
+            span = #{span},
+        </if>
+        <if test="structure!=null">
+            structure = #{structure},
+        </if>
+        <if test="gmtCreate!=null">
+            gmt_create = #{gmtCreate},
+        </if>
+        <if test="structNum != null">
+            
+        </if>
+
+    </update>
+    <select id="queryBridgeById" resultType="top.xsliu.detection.domain.Bridge">
+        select
+        <include refid="columns" />
+        from bridge_tb
+        where
+        id = #{bridgeId}
+    </select>
+    <select id="queryBridgesByParams" resultType="top.xsliu.detection.domain.Bridge">
+
+    </select>
+</mapper>
