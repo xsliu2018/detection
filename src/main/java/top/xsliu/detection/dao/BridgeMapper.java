@@ -1,7 +1,8 @@
 package top.xsliu.detection.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import top.xsliu.detection.dao.query.BridgeQuery;
-import top.xsliu.detection.domain.Bridge;
+import top.xsliu.detection.entity.Bridge;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * <a href="mailto:xsl2011@outlook.com" />
  * 2021/6/3012:31 上午
  */
+@Mapper
 public interface BridgeMapper {
     /**
      * 通过桥梁主键ID获取桥梁
@@ -33,6 +35,8 @@ public interface BridgeMapper {
      * @return 返回受影响的行数
      */
     int updateBridge(Bridge bridge, Long bridgeId);
+
+    int insertBridge(Bridge bridge);
 
 
 

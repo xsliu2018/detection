@@ -1,4 +1,4 @@
-package top.xsliu.detection.domain;
+package top.xsliu.detection.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,7 +55,7 @@ public class Bridge implements Serializable {
     /**
      * 图像路径
      */
-    private String picPath;
+    private String srcPath;
     /**
      * 对应的用户ID
      */
@@ -65,5 +65,14 @@ public class Bridge implements Serializable {
      * 状态 0-正在检测 1-完成检测 2-删除
      */
     private Integer status;
+
+    /**
+     * 检测之后的图像路径
+     */
+    private String detectedPath;
+    /**
+     * 量化之后的图像路径
+     */
+    private String quantifiedPath;
 
 }

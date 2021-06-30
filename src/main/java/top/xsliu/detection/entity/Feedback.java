@@ -1,4 +1,4 @@
-package top.xsliu.detection.domain;
+package top.xsliu.detection.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
