@@ -5,9 +5,27 @@
         insert into setting_tb(user_id, heads, global_shot_distance, global_focal_length)
         values (#{userId}, #{heads}, #{globalShotDistance}, #{globalFocalLength})
     </insert>
+    <!-- 根据用户的ID来更新其设置-->
+    <update id="updateSettingByUserId">
+        update setting_tb
+        <set>
+            <if test="heads != null">
+                heads = #{heads}
+            </if>
+            <if test="globalShotDistance != null">
+                global_shot_distance = #{globalShotDistance}
+            </if>
+            <if test="globalFocalLength != null">
+                global_focal_length = #{globalFocalLength}
+            </if>
+        </set>
+        where
+        user_id = #{userId}
+    </update>
     <select id="querySettingByUserId" resultType="top.xsliu.detection.entity.Setting">
         select * from setting_tb
         where user_id = #{userId}
     </select>
+
 
 </mapper>

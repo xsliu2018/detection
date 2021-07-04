@@ -13,4 +13,6 @@ public interface SettingMapper {
     Setting querySettingByUserId(long userId);
 
     int insertSetting(Setting setting);
+
+    int updateSettingByUserId(Setting setting);
 }

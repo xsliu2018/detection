@@ -130,4 +130,16 @@ public class AdminController {
             }
         }
     }
+
+    @GetMapping("/feedback")
+    public String toFeedback(HttpServletRequest request){
+        request.setAttribute("path", "feedback");
+        return "admin/feedback";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("user");
+        return "admin/login";
+    }
 }

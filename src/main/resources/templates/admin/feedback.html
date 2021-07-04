@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <div th:replace="admin/header::header-nav"></div>
+  <!-- 引入工具栏sidebar-fragment -->
+  <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">使用反馈</h3>
+              </div> <!-- /.card-body -->
+              <div class="card-body">
+                <form role="form" id="feedbackForm">
+                  <div class="form-group col-sm-8">
+                    <div class="alert alert-danger" id="setting-alert-info"
+                         style="display: none;"></div>
+                  </div>
+                  <!-- text input -->
+                  <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" class="form-control" id="title"
+                           name="title"
+                           placeholder="请简要描述问题" required="true" />
+                  </div>
+
+                  <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" class="form-control" id="email"
+                           name="email"
+                           placeholder="请输入联系邮箱" required="true" th:value="${session.user.email}">
+                  </div>
+                  <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" class="form-control" id="phone"
+                           name="phone"
+                           placeholder="请输入电话" required="true" th:value="${session.user.phone}">
+                  </div>
+                  <div class="form-group">
+                    <label>内容</label>
+                    <textarea type="text" class="form-control" id="content"
+                           name="content"
+                              placeholder="请输入具体内容" required="true" rows="12"> </textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>附件</label>
+                    <input type="file" class="form-control" id="attach-file" name="attach-file" multiple>
+                  </div>
+
+                  <div class="card-footer">
+                    <button type="button" id="feedbackBtn" onsubmit="return false;"
+                            class="btn btn-success float-right">提交反馈
+                    </button>
+                  </div>
+                </form>
+              </div><!-- /.card-body -->
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- 引入页脚footer-fragment -->
+  <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- public.js -->
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<!-- profile -->
+<script th:src="@{/admin/dist/js/profile.js}"></script>
+<script th:src="@{/admin/plugins/bootstrap-fileinput-5.2.2/js/fileinput.min.js}"></script>
+<link th:href="@{/admin/plugins/bootstrap-fileinput-5.2.2/css/fileinput.css}" rel="stylesheet" />
+<script th:src="@{/admin/plugins/bootstrap-fileinput-5.2.2/js/locales/zh.js}"></script>
+
+
+<script type="text/javascript">
+  $('#attach-file').fileinput({
+    language: 'zh',     //设置语言
+    dropZoneEnabled: true,      //是否显示拖拽区域
+    dropZoneTitle: "可以将图片拖放到这里",    //拖拽区域显示文字
+    uploadUrl: 'file/imgSave',  //上传路径
+    allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],   //指定上传文件类型
+    minFileSize: 0,
+    maxFileSize: 2048,   //上传文件最大值，单位kb
+    uploadAsync: true,  //异步上传
+    maxFileCount: 2    //上传文件最大个数。
+  }).on("fileuploaded", function(event,data) { //异步上传成功后回调
+    console.log(data);		//data为返回的数据
+  });
+</script>
+
+</body>
+</html>

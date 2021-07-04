@@ -37,7 +37,7 @@
             </a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link" th:href="@{/admin/index}">
+            <a class="nav-link" th:href="@{/admin/feedback}">
                 <i class="fa fa-bug">&nbsp;&nbsp;反馈</i>
             </a>
         </li>
@@ -47,22 +47,22 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item mr-2">
+                <a th:href="@{/admin/setting}" class="dropdown-item mr-2">
                     <i class="fa fa-user mr-2"></i> 账号
                     <span class="float-right text-muted text-sm" th:text="${session.user.id}">xsl2011@outlook.com</span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a th:href="@{/admin/setting}" class="dropdown-item">
                     <i class="fa fa-user-secret mr-2"></i> 姓名
                     <span class="float-right text-muted text-sm" th:text="${session.user.nick}"></span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a th:href="@{/admin/setting}" class="dropdown-item">
                     <i class="fa fa-apple mr-2"></i> 部门
                     <span class="float-right text-muted text-sm" th:text="${session.user.department}">什么部门</span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a th:href="@{/admin/setting}" class="dropdown-item">
                     <i class="fa fa-envelope mr-2"></i> 邮箱
                     <span class="float-right text-muted text-sm" th:text="${session.user.email}">xsl2011@outlook.com</span>
                 </a>
