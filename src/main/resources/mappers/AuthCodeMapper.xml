@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.AuthCodeMapper">
+    <sql id="column_list">
+        id, expire_time, unique_key, status
+    </sql>
+    <insert id="insertAuthCode">
+        insert into
+            auth_code_tb(expire_time, unique_key, status)
+            values (#{expireTime, jdbcType=DATE}, #{uniqueKey}, #{status})
+    </insert>
+    <update id="updateAuthCode">
+        update auth_code_tb
+        <set>
+            <if test="expireTime != null">
+                expire_time = #{expireTime},
+            </if>
+            <if test="uniqueKey != null">
+                unique_key = #{uniqueKey},
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+    </update>
+    <!--
+        private String uniqueKey;
+
+    private Integer status;
+
+    private Date expireDate;-->
+    <select id="queryByParams" resultType="top.xsliu.detection.entity.AuthCode">
+        select <include refid="column_list"/>
+        from auth_code_tb
+        <where>
+            <if test="uniqueKey != null">
+                AND unique_key = #{uniqueKey}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="expireTime != null">
+                AND ![<![CDATA[expire_time <= #{expireTime,jdbcType=DATE}]]>]
+            </if>
+        </where>
+        order by expire_time
+        <if test="page">
+            limit #{pageIndex}, #{pageSize}
+        </if>
+    </select>
+    <select id="queryAuthCodeById" resultType="top.xsliu.detection.entity.AuthCode">
+        select <include refid="column_list"/>
+        from auth_code_tb
+        where id = #{id}
+    </select>
+</mapper>

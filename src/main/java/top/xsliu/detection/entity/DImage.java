@@ -1,5 +1,6 @@
 package top.xsliu.detection.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,24 +37,29 @@ public class DImage implements Serializable {
      *     part_id bigint not null default -1 comment '所属部分',
      *     src_path varchar(256) not null comment '源图像的位置',
      *     detected_path varchar(256) comment '检测之后的位置',
+     *     detected_result mediumtext comment '检测之后的json形式结果',
      *     quantified_path varchar(256) comment '量化之后的位置',
+     *     quantified_result mediumtext comment '量化之后的json形式结果',
      *     primary key (id)
      * )engine =InnoDB, default charset='UTF8MB4';
      */
 
     private Long id;
-    private String imgName;
+    private String imageName;
     private Integer shotDistance;
     private Integer focalLength;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gmtCreate;
-    private Long structId;
+    private Long structId = 0L;
     private Integer crackNum;
     private Integer scalingNum;
     private Integer rebarNum;
     private Long userId;
     private Long bridgeId;
-    private Long partId;
+    private Long partId = 0L;
     private String srcPath;
     private String detectedPath;
     private String quantifiedPath;
+    private String quantifiedResult;
+    private String detectedResult;
 }

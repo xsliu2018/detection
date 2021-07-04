@@ -34,9 +34,9 @@ public class Struct implements Serializable {
 
     private Long id;
     private String structIndex;
-    private Long partId;
-    private Long userId;
-    private Long bridgeId;
+    private Long partId = 0L;
+    private Long userId = 0L;
+    private Long bridgeId = 0L;
     private Integer shotDistance;
     private Integer focalLength;
 }

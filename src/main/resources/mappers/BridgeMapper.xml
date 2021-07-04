@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.xsliu.detection.dao.BridgeMapper">
+
     <sql id="column_list">
-        id,
+        id
+        ,
         bridge_name,
         span,
         structure,
@@ -11,120 +13,171 @@
         picture_num,
         report_path,
         src_path,
-        user_id bigint,
+        user_id,
         status,
         detected_path,
         quantified_path
     </sql>
     <!-- 插入一个桥梁信息 -->
     <insert id="insertBridge">
-        insert into
-            bridge(
-                bridge_name,
-                span,
-                structure,
-                struct_num,
-                picture_num,
-                report_path,
-                src_path,
-                user_id,
-                status,
-                detected_path,
-                quantified_path,
-                type
-           )
-        values(
-               #{bridgeName},
-               #{span},
-               #{structure},
-               #{pictureNum},
-               #{reportPath},
-               #{srcPath},
-               #{userId},
-               #{status},
-               #{detectedPath},
-               #{quantifiedPath}
-              )
+        insert into bridge_tb(bridge_name,
+                              span,
+                              structure,
+                              struct_num,
+                              picture_num,
+                              report_path,
+                              src_path,
+                              user_id,
+                              status,
+                              detected_path,
+                              quantified_path)
+        values (#{bridgeName},
+                #{span},
+                #{structure},
+                #{structNum},
+                #{pictureNum},
+                #{reportPath},
+                #{srcPath},
+                #{userId},
+                #{status},
+                #{detectedPath},
+                #{quantifiedPath})
     </insert>
-    <update id="updateBridge" >
-        update bridge_tb set
-        <if test="bridgeName!=null">
-            bridge_name = #{bridgeName},
-        </if>
-        <if test="span!=null">
-            span = #{span},
-        </if>
-        <if test="structure!= null">
-            structure = #{structure},
-        </if>
-        <if test="gmtCreate!= null">
-            gmt_create = #{gmtCreate},
-        </if>
-        <if test="structNum != null">
-            struct_num = #{structNum}
-        </if>
-        <if test="pictureNum != null">
-            picture_num = #{picture}
-        </if>
-        <if test="reportPath">
-            report_path = #{reportPath}
-        </if>
-        <if test="srcPath != null">
-            src_path = #{srcPath}
-        </if>
-        <if test="userId != null">
-            user_id = #{userId}
-        </if>
-        <if test="status != null">
-            status = #{status}
-        </if>
-        <if test="quantifiedPath != null">
-            quantified_path = #{quantifiedPath}
-        </if>
-        <if test="detectedPath != null">
-            detected_path = #{detectedPath}
-        </if>
-
+    <update id="updateBridge">
+        update bridge_tb
+        <set>
+            <if test="bridgeName!=null">
+                bridge_name = #{bridgeName},
+            </if>
+            <if test="span!=null">
+                span = #{span},
+            </if>
+            <if test="structure!= null">
+                structure = #{structure},
+            </if>
+            <if test="gmtCreate!= null">
+                gmt_create = #{gmtCreate},
+            </if>
+            <if test="structNum != null">
+                struct_num = #{structNum},
+            </if>
+            <if test="pictureNum != null">
+                picture_num = #{pictureNum},
+            </if>
+            <if test="reportPath">
+                report_path = #{reportPath},
+            </if>
+            <if test="srcPath != null">
+                src_path = #{srcPath},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="quantifiedPath != null">
+                quantified_path = #{quantifiedPath},
+            </if>
+            <if test="detectedPath != null">
+                detected_path = #{detectedPath}
+            </if>
+        </set>
         where id = #{id}
 
     </update>
+
+    <!-- 批量更新状态 -->
+    <update id="batchUpdateStatus">
+        update bridge_tb
+        set status = #{status}
+        where id in
+        <if test="list != null">
+            <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </update>
+
     <select id="queryBridgeById" resultType="top.xsliu.detection.entity.Bridge">
         select
-        <include refid="column_list" />
+        <include refid="column_list"/>
         from bridge_tb
         where
         id = #{bridgeId}
     </select>
-    <select id="queryBridgesByParams" resultType="top.xsliu.detection.entity.Bridge" parameterType="top.xsliu.detection.dao.query.BridgeQuery">
+    <select id="queryBridgesByParams" resultType="top.xsliu.detection.entity.Bridge"
+            parameterType="top.xsliu.detection.model.query.BridgeParams">
         select
-        <include refid="column_list" />
-        from bridge_tb b, user_tb u
-        where
-        b.user_id = u.id
-        <if test="userName != null">
-           AND u.username like concat("%", #{username}, "%")
-        </if>
-        <if test="userId != null">
-            AND b.user_id = #{userId}
-        </if>
-        <if test="bridgeName != null">
-            AND b.bridge_name like concat("%", #{bridgeName}, "%")
-        </if>
-        <if test="span != null">
-            AND b.span = #{span}
-        </if>
-        <if test="structure != null">
-            AND b.structure like concat("%", #{structure}, "%")
-        </if>
-        <!-- 时间区间 -->
-        <if test="start != null ">
-            AND <![CDATA[ gmt_create >= #{start,jdbcType=DATE}  ]]>
-        </if>
-        <if test="end != null ">
-            AND <![CDATA[ gmt_create <= #{end,jdbcType=DATE} ]]>
-        </if>
+        <include refid="column_list"/>
+        from bridge_tb b
+        <where>
+            <if test="userId != null">
+                AND b.user_id = #{userId}
+            </if>
+            <if test="bridgeName != null">
+                AND b.bridge_name like concat("%", #{bridgeName}, "%")
+            </if>
+            <if test="span != null">
+                AND b.span = #{span}
+            </if>
+            <if test="structure != null">
+                AND b.structure like concat("%", #{structure}, "%")
+            </if>
+            <!-- 时间区间 -->
+            <if test="begin != null ">
+                AND <![CDATA[ b.gmt_create >= #{begin,jdbcType=DATE}  ]]>
+            </if>
+            <if test="end != null ">
+                AND <![CDATA[ b.gmt_create <= #{end,jdbcType=DATE} ]]>
+            </if>
+            <if test="_status != null">
+                AND b.status != #{_status}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND b.bridge_name like concat("%", #{keyword}, "%")
+                OR b.span like concat("%", #{keyword}, "%")
+                OR b.structure like concat("%", #{keyword}, "%")
+            </if>
+        </where>
+        order by gmt_create desc
         <if test="page">
             limit #{pageIndex}, #{pageSize}
         </if>
     </select>
+    <!--根据查询条件进行统计 -->
+    <select id="countBridgeByParams" resultType="java.lang.Long">
+        select count(*)
+        from bridge_tb b
+        <where>
+            <if test="userId != null">
+                AND b.user_id = #{userId}
+            </if>
+            <if test="bridgeName != null">
+                AND b.bridge_name like concat("%", #{bridgeName}, "%")
+            </if>
+            <if test="span != null">
+                AND b.span = #{span}
+            </if>
+            <if test="structure != null">
+                AND b.structure like concat("%", #{structure}, "%")
+            </if>
+            <!-- 时间区间 -->
+            <if test="begin != null ">
+                AND <![CDATA[ b.gmt_create >= #{begin,jdbcType=DATE}  ]]>
+            </if>
+            <if test="end != null ">
+                AND <![CDATA[ b.gmt_create <= #{end,jdbcType=DATE} ]]>
+            </if>
+            <if test="_status != null">
+                AND b.status = #{_status}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND b.bridge_name like concat("%", #{keyword}, "%")
+                OR b.span like concat("%", #{keyword}, "%")
+                OR b.structure like concat("%", #{keyword}, "%")
+            </if>
+        </where>
+    </select>
+
 </mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.SettingMapper">
+    <insert id="insertSetting">
+        insert into setting_tb(user_id, heads, global_shot_distance, global_focal_length)
+        values (#{userId}, #{heads}, #{globalShotDistance}, #{globalFocalLength})
+    </insert>
+    <select id="querySettingByUserId" resultType="top.xsliu.detection.entity.Setting">
+        select * from setting_tb
+        where user_id = #{userId}
+    </select>
+
+</mapper>

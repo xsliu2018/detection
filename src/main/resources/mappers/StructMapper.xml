@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.StructMapper">
+    <insert id="insertStruct">
+        insert into struct_tb
+            (struct_index, part_id, user_id, bridge_id,
+             shot_distance, focal_length)
+             values (#{structIndex}, #{partId}, #{userId}, #{bridgeId},
+                     #{shotDistance}, #{focalLength})
+    </insert>
+    <update id="updateStruct"></update>
+    <select id="queryStructsByParams" resultType="top.xsliu.detection.entity.Struct"></select>
+    <select id="queryById" resultType="top.xsliu.detection.entity.Struct"></select>
+    <select id="countStructsByUserId" resultType="java.lang.Long">
+        select count(*)
+        from struct_tb
+        where user_id = #{userId}
+    </select>
+</mapper>

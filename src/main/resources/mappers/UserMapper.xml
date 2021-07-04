@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.UserMapper">
+    <sql id="column_list">
+        id,
+        nick,
+        email,
+        phone,
+        company,
+        department,
+        province,
+        city,
+        password,
+        gmt_create,
+        auth_code_id,
+        type,
+        status
+    </sql>
+    <!--插入一个新的用户数据-->
+    <insert id="insertUser">
+        insert into user_tb
+            (nick, email, phone, company, department,
+            province, city, password, gmt_create, auth_code_id
+            type, status
+            )
+        values(#{nick}, #{email}, #{phone}, #{company}, #{department},
+               #{province}, #{city}, #{password}, #{gmtCreate, jdbcType=DATE},
+               #{authCodeId}, #{type}, #{status})
+    </insert>
+
+    <!-- 更新一个User，根据ID-->
+    <update id="updateUserById">
+        update user_tb
+        <set>
+            <if test="nick != null">
+                nick = #{nick}
+            </if>
+            <if test="email != null">
+                email = #{email}
+            </if>
+            <if test="phone != null">
+                phone = #{phone}
+            </if>
+            <if test="company != null">
+                company = #{company}
+            </if>
+            <if test="department != null">
+                department = #{department}
+            </if>
+            <if test="province != null">
+                province = #{province}
+            </if>
+            <if test="city != null">
+                city = #{city}
+            </if>
+            <if test="password != null">
+                password = #{password}
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate, jdbcType=DATE}
+            </if>
+            <if test="authCodeId != null">
+                auth_code_id = #{authCodeId}
+            </if>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="queryUserByParams" resultType="top.xsliu.detection.entity.User">
+        select <include refid="column_list" />
+        from user_tb
+        <where>
+            <if test="nick != null">
+                AND nick like concat("%", #{nick}, "%")
+            </if>
+            <if test="province != null">
+                AND province = #{province}
+            </if>
+            <if test="city != null">
+                AND city = #{city}
+            </if>
+            <if test="authCodeId != null">
+                AND auth_code_id = #{authCodeId}
+            </if>
+            <if test="company != null">
+                AND company = #{company}
+            </if>
+            <if test="phone != null">
+                AND phone = #{phone}
+            </if>
+            <if test="email != null">
+                AND email = #{email}
+            </if>
+        </where>
+        <!-- 默认时间倒序 -->
+        order by gmt_create desc
+        <if test="page">
+            limit #{pageIndex}, #{pageSize}
+        </if>
+
+
+
+
+    </select>
+    <select id="queryUserById" resultType="top.xsliu.detection.entity.User">
+        select <include refid="column_list" />
+        from user_tb
+        where id = #{userId}
+    </select>
+
+    <!-- 通过手机号码查找用户 -->
+    <select id="queryUserByPhone" resultType="top.xsliu.detection.entity.User">
+        select <include refid="column_list" />
+        from user_tb
+        where phone = #{phone}
+    </select>
+
+    <!-- 通过email查找用户 -->
+    <select id="queryUserByEmail" resultType="top.xsliu.detection.entity.User">
+        select <include refid="column_list" />
+        from user_tb
+        where email = #{email}
+    </select>
+
+
+</mapper>

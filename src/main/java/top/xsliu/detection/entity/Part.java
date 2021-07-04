@@ -1,5 +1,6 @@
 package top.xsliu.detection.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,7 @@ public class Part implements Serializable {
      */
 
     private Long id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gmtCreate;
     private PartTypeEnum partEnum;
     private Integer shotDistance;

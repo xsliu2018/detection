@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+<!--    &lt;!&ndash; 引入页面头header-fragment &ndash;&gt;-->
+<!--    <div th:replace="admin/header::header-nav"></div>-->
+<!--    &lt;!&ndash; 引入工具栏sidebar-fragment &ndash;&gt;-->
+<!--    <aside th:fragment="sidebar-fragment(path)" class="main-sidebar sidebar-dark-primary elevation-4">-->
+<!--        &lt;!&ndash; Brand Logo &ndash;&gt;-->
+<!--        <a th:href="@{/admin/index}" class="brand-link">-->
+<!--            <img th:src="@{/admin/dist/img/logo.png}" alt="ssm-cluster Logo" class="brand-image img-circle elevation-3"-->
+<!--                 style="opacity: .8">-->
+<!--            <span class="brand-text font-weight-light">my blog</span>-->
+<!--        </a>-->
+<!--        &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--        <div class="sidebar">-->
+<!--            &lt;!&ndash; Sidebar user panel (optional) &ndash;&gt;-->
+<!--            <div class="user-panel mt-3 pb-3 mb-3 d-flex">-->
+<!--                <div class="image">-->
+<!--                    <img th:src="@{/admin/dist/img/avatar5.png}" class="img-circle elevation-2" alt="User Image">-->
+<!--                </div>-->
+<!--                <div class="info">-->
+<!--                    <a href="#" class="d-block" th:text="${session.user.username}"></a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Sidebar Menu &ndash;&gt;-->
+<!--            <nav class="mt-2">-->
+<!--                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"-->
+<!--                    data-accordion="false">-->
+<!--                    &lt;!&ndash; Add icons to the links using the .nav-icon class-->
+<!--                         with font-awesome or any other icon font library &ndash;&gt;-->
+<!--                    <li class="nav-header">首页</li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{/admin/index}" class="nav-link">-->
+<!--                            <i class="nav-icon fa fa-dashboard"></i>-->
+<!--                            <p>-->
+<!--                                首页-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-header">系统管理</li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{/admin/setting}" class="nav-link active">-->
+<!--                            <i class="fa fa-user-secret nav-icon"></i>-->
+<!--                            <p>修改密码</p>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{/admin/profile/logout}" class="nav-link">-->
+<!--                            <i class="fa fa-sign-out nav-icon"></i>-->
+<!--                            <p>安全退出</p>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--            &lt;!&ndash; /.sidebar-menu &ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.sidebar &ndash;&gt;-->
+<!--    </aside>-->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">基本信息</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+                                <form role="form" id="settingForm">
+                                    <div class="form-group col-sm-8">
+                                        <div class="alert alert-danger" id="setting-alert-info"
+                                             style="display: none;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <img class="img-rounded"
+                                             alt="点击更换头像"
+                                             th:src="@{/admin/heads}"
+                                             onclick="changeHeads()"
+                                             height="100px"
+                                             width="80px"
+                                        />
+                                    </div>
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>昵称</label>
+                                        <input type="text" class="form-control" id="nickname"
+                                               name="username"
+                                               placeholder="请输入昵称" required="true" th:value="${session.user.nick}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>邮箱</label>
+                                        <input type="text" class="form-control" id="email"
+                                               name="nickname"
+                                               placeholder="请输入邮箱" required="true" th:value="${session.user.email}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>电话</label>
+                                        <input type="text" class="form-control" id="phone"
+                                               name="nickname"
+                                               placeholder="请输入昵称" required="true" th:value="${session.user.phone}">
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" id="updateButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">确认修改
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">修改密码</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+                                <form role="form" id="userPasswordForm">
+                                    <div class="form-group col-sm-8">
+                                        <div class="alert alert-danger updatePassword-info" id="updatePassword-info"
+                                             style="display: none;"></div>
+                                    </div>
+                                    <!-- input states -->
+                                    <div class="form-group">
+                                        <label class="control-label"><i class="fa fa-key"></i> 原密码</label>
+                                        <input type="text" class="form-control" id="originalPassword"
+                                               name="originalPassword"
+                                               placeholder="请输入原密码" required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"><i class="fa fa-key"></i> 新密码</label>
+                                        <input type="text" class="form-control" id="newPassword" name="newPassword"
+                                               placeholder="请输入新密码" required="true">
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" id="updatePasswordButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">确认修改
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- 模态框 -->
+    <form>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalLabel">选择头像</h4>
+                    </div>
+                    <div class="modal-body">
+                        <a href="~/Data/ExcelTemplate/Order.xlsx" class="form-control" style="border:none;">下载导入模板</a>
+                        <input type="file" name="txt_file" id="txt_file" multiple class="file-loading" />
+                    </div></div>
+            </div>
+        </div>
+    </form>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- public.js -->
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<!-- profile -->
+<script th:src="@{/admin/dist/js/profile.js}"></script>
+</body>
+</html>

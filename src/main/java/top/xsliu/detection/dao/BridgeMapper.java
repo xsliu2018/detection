@@ -1,7 +1,8 @@
 package top.xsliu.detection.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.xsliu.detection.dao.query.BridgeQuery;
+import org.apache.ibatis.annotations.Param;
+import top.xsliu.detection.model.query.BridgeParams;
 import top.xsliu.detection.entity.Bridge;
 
 import java.util.List;
@@ -23,21 +24,28 @@ public interface BridgeMapper {
 
     /**
      * 根据条件获取其对应的桥梁列表
-     * @param query 条件
+     * @param params 条件
      * @return 桥梁列表
      */
-    List<Bridge> queryBridgesByParams(BridgeQuery query);
+    List<Bridge> queryBridgesByParams(BridgeParams params);
 
     /**
      * 根据桥梁ID精准进行更新
      * @param bridge 桥梁信息封装
-     * @param bridgeId 桥梁ID
      * @return 返回受影响的行数
      */
-    int updateBridge(Bridge bridge, Long bridgeId);
+    int updateBridge(Bridge bridge);
 
+    /**
+     * 插入一个新的桥梁信息
+     * @param bridge 桥梁信息封装
+     * @return 返回受影响的行数
+     */
     int insertBridge(Bridge bridge);
 
 
 
+    long countBridgeByParams(BridgeParams params);
+
+    int batchUpdateStatus(int status, @Param("list") List<Long> ids);
 }

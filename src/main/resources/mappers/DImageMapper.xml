@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xsliu.detection.dao.DImageMapper">
+    <sql id="column_list">
+        id ,
+        img_name,
+        shot_distance,
+        focal_length,
+        gmt_create,
+        struct_id,
+        crack_num,
+        scaling_num,
+        rebar_num,
+        user_id,
+        bridge_id,
+        part_id,
+        src_path,
+        detected_path,
+        detected_result,
+        quantified_path,
+        quantified_result,
+    </sql>
+    <insert id="insertDImage">
+        insert into img_tb(
+        img_name, shot_distance, focal_length, gmt_create,
+        struct_id, crack_num, scaling_num, rebar_num, user_id,
+        bridge_id, part_id, src_path, detected_path,
+        detected_result, quantified_path, quantified_result)
+        values(#{imageName}, #{shotDistance}, #{focalLength}, #{gmtCreate},
+               #{structId}, #{crackNum}, #{scalingNum}, #{rebarNum},#{userId},
+               #{bridgeId}, #{partId}, #{srcPath}, #{detectedPath},
+               #{detectedResult}, #{quantifiedPath}, #{quantifiedResult})
+    </insert>
+    <update id="updateDImage">
+
+    </update>
+    <select id="queryDImageByParams" resultType="top.xsliu.detection.entity.DImage">
+
+    </select>
+    <select id="queryDImageById" resultType="top.xsliu.detection.entity.DImage">
+
+    </select>
+    <select id="countDImageByUserId" resultType="java.lang.Long">
+        select count(*)
+        from img_tb
+        where user_id = #{userId}
+    </select>
+</mapper>
