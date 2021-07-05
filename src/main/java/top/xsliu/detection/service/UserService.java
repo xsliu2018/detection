@@ -6,6 +6,7 @@ import top.xsliu.detection.dao.UserMapper;
 import top.xsliu.detection.entity.User;
 import top.xsliu.detection.model.enumeration.ErrorCodeEnum;
 import top.xsliu.detection.model.exception.DetectionException;
+import top.xsliu.detection.model.result.Result;
 import top.xsliu.detection.util.StringUtil;
 
 import javax.annotation.Resource;
@@ -42,4 +43,8 @@ public class UserService {
     }
 
 
+    public boolean updatePassword(User user) {
+        return userMapper.updateUserById(user) > 0;
+
+    }
 }

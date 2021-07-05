@@ -2,6 +2,7 @@ package top.xsliu.detection.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import top.xsliu.detection.annotation.ExceptionPoint;
 import top.xsliu.detection.entity.Setting;
 import top.xsliu.detection.entity.User;
 import top.xsliu.detection.model.enumeration.ErrorCodeEnum;
@@ -12,13 +13,14 @@ import top.xsliu.detection.service.UserService;
 import top.xsliu.detection.util.StringUtil;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * @author lxs
@@ -76,17 +78,20 @@ public class AdminController {
         }
     }
 
+    @ExceptionPoint
     @GetMapping("/setting")
     public String updateSetting(HttpServletRequest request){
         request.setAttribute("path", "setting");
         return "admin/setting";
     }
 
+    @ExceptionPoint
     @PostMapping("/setting")
     public Result<Boolean> updateSetting(){
         return null;
     }
 
+    @ExceptionPoint
     @GetMapping("/heads")
     public void getHeads(HttpServletResponse response, HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -131,15 +136,40 @@ public class AdminController {
         }
     }
 
+    @ExceptionPoint
     @GetMapping("/feedback")
     public String toFeedback(HttpServletRequest request){
         request.setAttribute("path", "feedback");
         return "admin/feedback";
     }
 
+    @ExceptionPoint
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.removeAttribute("user");
         return "admin/login";
+    }
+
+    @ExceptionPoint
+    @PostMapping("/setting/password")
+    public Result<Boolean> updatePassword(
+            @RequestBody String originalPassword,
+            @RequestBody String newPassword,
+            HttpSession session
+    ){
+        User user = (User) session.getAttribute("user");
+        if (!user.getPassword().equals(originalPassword)){
+            return Result.failure("原密码不正确，请重试");
+        }
+        User updateUser = new User();
+        user.setId(user.getId());
+        user.setPassword(newPassword);
+        boolean success = userService.updatePassword(updateUser);
+        if (success){
+            user.setPassword(newPassword);
+            session.setAttribute("user", user);
+            return Result.success();
+        }
+        throw new DetectionException(ErrorCodeEnum.UPDATE_USER_ERROR);
     }
 }

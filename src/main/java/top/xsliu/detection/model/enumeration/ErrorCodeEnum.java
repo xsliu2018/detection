@@ -12,7 +12,8 @@ import top.xsliu.detection.model.exception.DetectionException;
 public enum ErrorCodeEnum {
     SYSTEM(1, "system exception"),
     LOGIN(2, "login error，please enter correct username"),
-    CANT_FIND_FILE(3, "can't find matched file");
+    CANT_FIND_FILE(3, "can't find matched file"),
+    UPDATE_USER_ERROR(4,"update user error");
     @Getter
     private final int code;
     @Getter

@@ -4,10 +4,9 @@ $(function () {
     $btn.click(function () {
         $btn.attr("disabled",true);
         let nickname = $('#nickname').val();
-        let password = $('#password').val();
         let email = $('#email').val()
         let phone = $('#phone').val()
-        if (validUserNameForUpdate(email, nickname, phone, password)) {
+        if (validUserNameForUpdate(email, nickname, phone)) {
             //ajax提交数据
             let params = $("#settingForm").serialize();
             $.ajax({
@@ -36,7 +35,7 @@ $(function () {
              let params = $("#userPasswordForm").serialize();
              $.ajax({
                  type: "POST",
-                 url: "/admin/profile/password",
+                 url: "/admin/setting/password",
                  data: params,
                  success: function (result) {
                      console.log(result);
